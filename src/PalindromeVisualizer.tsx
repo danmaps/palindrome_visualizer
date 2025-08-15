@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
+import './PalindromeVisualizer.css';
 
 const PalindromeVisualizer = () => {
   const [text, setText] = useState('');
   const [displayText, setDisplayText] = useState('');
-  const [isPalindrome, setIsPalindrome] = useState(null);
+  const [isPalindrome, setIsPalindrome] = useState<boolean | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
-  // Clean text for palindrome checking (remove spaces, punctuation, convert to lowercase)
-  const cleanText = (str) => {
+  const cleanText = (str: string) => {
     return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
   };
 
-  // Check if text is a palindrome
-  const checkPalindrome = (str) => {
+  const checkPalindrome = (str: string) => {
     const cleaned = cleanText(str);
-    if (cleaned.length <= 1) return null; // Don't count single characters or empty strings
+    if (cleaned.length <= 1) return null;
     return cleaned === cleaned.split('').reverse().join('');
   };
 
@@ -23,21 +22,18 @@ const PalindromeVisualizer = () => {
     const result = checkPalindrome(text);
     setIsPalindrome(result);
     
-    // Remove all non-alphabetic characters and convert to uppercase
     const cleaned = text.replace(/[^a-zA-Z]/g, '').toUpperCase();
     setDisplayText(cleaned);
     
     if (text.trim()) {
       setIsAnimating(true);
-      // Restart animation by changing the key
       setAnimationKey(prev => prev + 1);
     } else {
       setIsAnimating(false);
     }
   }, [text]);
 
-  // Create individual letter positions for maintaining orientation
-  const createLetterPositions = (str) => {
+  const createLetterPositions = (str: string) => {
     const letters = str.split('');
     return letters.map((letter, index) => ({
       letter,
@@ -56,13 +52,12 @@ const PalindromeVisualizer = () => {
         : 'bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200'
     }`}>
       
-      {/* Celebration particles for palindromes */}
       {isPalindrome === true && (
         <div className="fixed inset-0 pointer-events-none">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-3 h-3 bg-yellow-400 rounded-full animate-bounce"
+              className="celebration-particle"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -74,7 +69,6 @@ const PalindromeVisualizer = () => {
         </div>
       )}
 
-      {/* Input field */}
       <div className="mb-16 z-10">
         <input
           type="text"
@@ -85,16 +79,11 @@ const PalindromeVisualizer = () => {
         />
       </div>
 
-      {/* Rotating text visualization */}
       {displayText && (
         <div className="relative">
           <div 
             key={animationKey}
-            className="relative"
-            style={{
-              animation: isAnimating ? 'spin 4s linear infinite' : 'none',
-              transformOrigin: 'center'
-            }}
+            className={`relative ${isAnimating ? 'spin-animation' : ''}`}
           >
             {letterPositions.map((pos, index) => (
               <span
@@ -107,12 +96,9 @@ const PalindromeVisualizer = () => {
                     : 'text-indigo-600'
                 } ${
                   isPalindrome === false ? 'animate-pulse' : ''
+                } ${
+                  isAnimating ? 'counter-spin-animation' : ''
                 }`}
-                style={{
-                  animation: isAnimating ? 'counterSpin 4s linear infinite' : 'none',
-                  transformOrigin: 'center',
-                  display: 'inline-block'
-                }}
               >
                 {pos.letter}
               </span>
@@ -121,7 +107,6 @@ const PalindromeVisualizer = () => {
         </div>
       )}
 
-      {/* Status message */}
       {displayText && (
         <div className={`mt-16 text-center transition-all duration-500 ${
           isPalindrome === true ? 'animate-bounce' : isPalindrome === false ? 'animate-pulse' : ''
@@ -151,17 +136,6 @@ const PalindromeVisualizer = () => {
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes counterSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-      `}</style>
     </div>
   );
 };

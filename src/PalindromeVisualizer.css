@@ -1,0 +1,34 @@
+@keyframes spin {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes counterSpin {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(-360deg); 
+  }
+}
+
+.spin-animation {
+  animation: spin 4s linear infinite;
+}
+
+.counter-spin-animation {
+  animation: counterSpin 4s linear infinite;
+}
+
+.celebration-particle {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: rgb(251, 191, 36);
+  border-radius: 50%;
+  animation: bounce 1s infinite;
+}
