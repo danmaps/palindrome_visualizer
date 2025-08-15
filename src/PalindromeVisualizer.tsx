@@ -7,6 +7,29 @@ const PalindromeVisualizer = () => {
   const [isPalindrome, setIsPalindrome] = useState<boolean | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
+  const [lastExampleIndex, setLastExampleIndex] = useState<number | null>(null);
+
+  // Curated palindrome examples
+  const palindromeExamples = [
+    "Taco cat",
+    "A man a plan a canal Panama",
+    "Racecar",
+    "Was it a rat I saw?",
+    "Madam",
+    "Never odd or even",
+    "Do geese see God?",
+    "A Santa at NASA",
+    "Mr. Owl ate my metal worm",
+    "Was it a car or a cat I saw?",
+    "Step on no pets",
+    "Yo, banana boy!",
+    "A nut for a jar of tuna",
+    "No, Mel Gibson is a casino's big lemon",
+    "Borrow or rob?",
+    "A Toyota's a Toyota",
+    "Red rum, sir, is murder",
+    "Live not on evil"
+  ];
 
   const cleanText = useCallback((str: string) => {
     return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
@@ -41,6 +64,21 @@ const PalindromeVisualizer = () => {
     }));
   }, []);
 
+  const getRandomExample = useCallback(() => {
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * palindromeExamples.length);
+    } while (randomIndex === lastExampleIndex && palindromeExamples.length > 1);
+    
+    setLastExampleIndex(randomIndex);
+    return palindromeExamples[randomIndex];
+  }, [palindromeExamples, lastExampleIndex]);
+
+  const handleExampleClick = useCallback(() => {
+    const example = getRandomExample();
+    setText(example);
+  }, [getRandomExample]);
+
   const letterPositions = displayText ? createLetterPositions(displayText) : [];
 
   return (
@@ -69,7 +107,7 @@ const PalindromeVisualizer = () => {
         </div>
       )}
 
-      <div className="mb-16 z-10">
+      <div className="mb-16 z-10 flex items-center gap-4">
         <input
           type="text"
           value={text}
@@ -77,6 +115,13 @@ const PalindromeVisualizer = () => {
           placeholder="Type anything..."
           className="px-6 py-3 text-2xl text-center border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-400 bg-white/80 backdrop-blur-sm shadow-lg min-w-80"
         />
+        <button
+          onClick={handleExampleClick}
+          title="Try a random palindrome example"
+          className="example-button px-4 py-3 text-2xl border-2 border-gray-300 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:border-blue-400 hover:bg-blue-50/80 transition-all duration-200 focus:outline-none focus:border-blue-400"
+        >
+          💡
+        </button>
       </div>
 
       {displayText && (

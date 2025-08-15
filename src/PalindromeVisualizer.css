@@ -32,3 +32,11 @@
   border-radius: 50%;
   animation: bounce 1s infinite;
 }
+
+.example-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.example-button:hover {
+  transform: scale(1.05);
+}

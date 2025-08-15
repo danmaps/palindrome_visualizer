@@ -6,6 +6,9 @@ An interactive palindrome checker with beautiful animations built with React and
 
 - Real-time palindrome detection
 - Animated rotating text visualization
+- **Example button (💡)** - One-click random palindrome examples
+- Beautiful gradient backgrounds that change based on palindrome status
+- Celebration particles for palindromes
 - Responsive design with Tailwind CSS
 
 ## Live Demo
