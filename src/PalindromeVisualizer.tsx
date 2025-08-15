@@ -1,5 +1,27 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import './PalindromeVisualizer.css';
+
+// Curated palindrome examples - moved outside component to prevent re-creation
+const PALINDROME_EXAMPLES = [
+  "Taco cat",
+  "A man a plan a canal Panama",
+  "Racecar",
+  "Was it a rat I saw?",
+  "Madam",
+  "Never odd or even",
+  "Do geese see God?",
+  "A Santa at NASA",
+  "Mr. Owl ate my metal worm",
+  "Was it a car or a cat I saw?",
+  "Step on no pets",
+  "Yo, banana boy!",
+  "A nut for a jar of tuna",
+  "No, Mel Gibson is a casino's big lemon",
+  "Borrow or rob?",
+  "A Toyota's a Toyota",
+  "Red rum, sir, is murder",
+  "Live not on evil"
+];
 
 const PalindromeVisualizer = () => {
   const [text, setText] = useState('');
@@ -8,28 +30,6 @@ const PalindromeVisualizer = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
   const [lastExampleIndex, setLastExampleIndex] = useState<number | null>(null);
-
-  // Curated palindrome examples
-  const palindromeExamples = [
-    "Taco cat",
-    "A man a plan a canal Panama",
-    "Racecar",
-    "Was it a rat I saw?",
-    "Madam",
-    "Never odd or even",
-    "Do geese see God?",
-    "A Santa at NASA",
-    "Mr. Owl ate my metal worm",
-    "Was it a car or a cat I saw?",
-    "Step on no pets",
-    "Yo, banana boy!",
-    "A nut for a jar of tuna",
-    "No, Mel Gibson is a casino's big lemon",
-    "Borrow or rob?",
-    "A Toyota's a Toyota",
-    "Red rum, sir, is murder",
-    "Live not on evil"
-  ];
 
   const cleanText = useCallback((str: string) => {
     return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
@@ -67,12 +67,12 @@ const PalindromeVisualizer = () => {
   const getRandomExample = useCallback(() => {
     let randomIndex;
     do {
-      randomIndex = Math.floor(Math.random() * palindromeExamples.length);
-    } while (randomIndex === lastExampleIndex && palindromeExamples.length > 1);
+      randomIndex = Math.floor(Math.random() * PALINDROME_EXAMPLES.length);
+    } while (randomIndex === lastExampleIndex && PALINDROME_EXAMPLES.length > 1);
     
     setLastExampleIndex(randomIndex);
-    return palindromeExamples[randomIndex];
-  }, [palindromeExamples, lastExampleIndex]);
+    return PALINDROME_EXAMPLES[randomIndex];
+  }, [lastExampleIndex]);
 
   const handleExampleClick = useCallback(() => {
     const example = getRandomExample();
