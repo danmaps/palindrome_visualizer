@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './PalindromeVisualizer.css';
 
 // Curated palindrome examples - moved outside component to prevent re-creation
