@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './PalindromeVisualizer.css';
 
 const PalindromeVisualizer = () => {
@@ -8,15 +8,15 @@ const PalindromeVisualizer = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
-  const cleanText = (str: string) => {
+  const cleanText = useCallback((str: string) => {
     return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-  };
+  }, []);
 
-  const checkPalindrome = (str: string) => {
+  const checkPalindrome = useCallback((str: string) => {
     const cleaned = cleanText(str);
     if (cleaned.length <= 1) return null;
     return cleaned === cleaned.split('').reverse().join('');
-  };
+  }, [cleanText]);
 
   useEffect(() => {
     const result = checkPalindrome(text);
@@ -31,15 +31,15 @@ const PalindromeVisualizer = () => {
     } else {
       setIsAnimating(false);
     }
-  }, [text]);
+  }, [text, checkPalindrome]);
 
-  const createLetterPositions = (str: string) => {
+  const createLetterPositions = useCallback((str: string) => {
     const letters = str.split('');
     return letters.map((letter, index) => ({
       letter,
       index
     }));
-  };
+  }, []);
 
   const letterPositions = displayText ? createLetterPositions(displayText) : [];
 
